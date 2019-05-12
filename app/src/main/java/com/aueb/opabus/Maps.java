@@ -13,7 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Maps extends AppCompatActivity{
+public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap mMap;
     private Button Maps_Button_Back;
     @Override
@@ -21,9 +21,9 @@ public class Maps extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Initialize();
-//        SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
-//        mapFragment.getMapAsync( this);
-//
+        SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
+        mapFragment.getMapAsync( this);
+
         Maps_Button_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,15 +32,15 @@ public class Maps extends AppCompatActivity{
             }
         });
     }
-//
-//
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        LatLng bus = new LatLng(37.973278,23.71061);
-//        mMap.addMarker(new MarkerOptions().position(bus).title("Bus map"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(bus));
-//    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng bus = new LatLng(37.973278,23.71061);
+        mMap.addMarker(new MarkerOptions().position(bus).title("Bus map"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(bus));
+    }
     private void Initialize(){
         Maps_Button_Back=(Button) findViewById(R.id.Maps_Button_Back);
     }

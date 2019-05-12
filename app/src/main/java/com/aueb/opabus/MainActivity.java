@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
 
         protected void onPostExecute(Subscriber sub){
-            Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
+            //Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
             progressDialog.dismiss();
         }
 
