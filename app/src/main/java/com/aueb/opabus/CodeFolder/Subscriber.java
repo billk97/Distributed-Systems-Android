@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Subscriber extends Node implements Serializable {
     private static final long serialVersionUID = -2122691439868668146L;
-    private String brokerIp = "192.168.1.65";
+    private String brokerIp = "192.168.1.72";
     private int brokerport= 4202;
     Socket socket =new Socket();
     private ObjectInputStream in;
@@ -47,6 +47,8 @@ public class Subscriber extends Node implements Serializable {
             out.writeUTF("BrokerList");
             out.flush();
             BrokerList=(ArrayList<Brocker>) in.readObject();
+
+            System.out.println("bill");
             in.close();
             out.close();
         } catch (IOException e) {
