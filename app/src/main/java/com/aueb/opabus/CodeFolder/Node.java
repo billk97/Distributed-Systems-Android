@@ -32,7 +32,6 @@ public class Node implements Serializable {
         BusLinesArray = read.readBusLines();
     }
 
-
     public void printBusLinesArray(){
         for(String [] tempTable : BusLinesArray){
             System.out.println(tempTable[0]+" "+tempTable[1]+" "+tempTable[2]);

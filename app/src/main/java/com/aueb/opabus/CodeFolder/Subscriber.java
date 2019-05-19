@@ -40,6 +40,32 @@ public class Subscriber extends Node implements Serializable {
             }
         }
     }//end findBroker
+    public String BusLineIdToLineCode(String LineId){
+        for (String[] line: BrokerList.get(0).brokerBusList){
+            if(line[1].equals(LineId)){
+                return line[0];
+            }
+        }
+        return "Bus Not found";
+    }
+    public String BusLineIdToDescriptionEnglish(String LineId){
+        for (String[] line: BrokerList.get(0).brokerBusList){
+            if(line[1].equals(LineId)){
+                return line[2];
+            }
+        }
+        return "Bus Not found";
+    }
+    public ArrayList<String> LineCodeToRouteCodeDesrcription(String LineCode){
+        ArrayList<String> DescriptionArray = new ArrayList<>();
+        for (String [] line:BrokerList.get(0).localeRouteCodesList ){
+            if(line[1].equals(LineCode)){
+                DescriptionArray.add(line[3]);
+            }
+        }
+        return DescriptionArray;
+    }
+
 
     /**first connection gets the broker list to know who is responsible**/
     public void EstablishConnection() {
@@ -52,7 +78,6 @@ public class Subscriber extends Node implements Serializable {
             out.flush();
             Log.e("debug",in.readUTF());
             BrokerList=(ArrayList<Brocker>) in.readObject();
-
             System.out.println("bill");
             in.close();
             out.close();
