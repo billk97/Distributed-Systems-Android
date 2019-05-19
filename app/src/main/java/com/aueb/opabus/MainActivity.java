@@ -41,11 +41,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goToMaps =new Intent(getApplicationContext(),Maps.class);
-                goToMaps.putExtra("BusForSearch",BusLineCode);
+                goToMaps.putExtra("BusForSearch",BusForSearch);
                 startActivityForResult(goToMaps,0);
             }
         });
-
 
         Main_imageButton_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 BusDescriptionBackwards= su.LineCodeToRouteCodeDesrcription(BusLineCode);
                 System.out.println();
                 System.out.println();
-                //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,BusDescriptionBackwards);
-                //Main_ListView_SelectRoute.setAdapter(arrayAdapter);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,BusDescriptionBackwards);
+                Main_ListView_SelectRoute.setAdapter(arrayAdapter);
 
             }
         });
@@ -78,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(Subscriber sub){
             Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
-
-            BusDescriptionBackwards= su.LineCodeToRouteCodeDesrcription("804");
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,BusDescriptionBackwards);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,su.AvailableBuses());
             Main_ListView_SelectRoute.setAdapter(arrayAdapter);
             progressDialog.dismiss();
         }

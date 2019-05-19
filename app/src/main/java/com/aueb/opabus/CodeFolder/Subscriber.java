@@ -65,6 +65,13 @@ public class Subscriber extends Node implements Serializable {
         }
         return DescriptionArray;
     }
+    public ArrayList<String> AvailableBuses(){
+        ArrayList<String>AvailableBus = new ArrayList<>();
+        for (String [] line:BrokerList.get(0).brokerBusList){
+            AvailableBus.add(line[1]+" "+line[2]);
+        }
+        return AvailableBus;
+    }
 
 
     /**first connection gets the broker list to know who is responsible**/
@@ -76,9 +83,7 @@ public class Subscriber extends Node implements Serializable {
             System.out.println(in.readUTF());
             out.writeUTF("BrokerList");
             out.flush();
-            Log.e("debug",in.readUTF());
             BrokerList=(ArrayList<Brocker>) in.readObject();
-            System.out.println("bill");
             in.close();
             out.close();
         } catch (IOException e) {
@@ -117,6 +122,7 @@ public class Subscriber extends Node implements Serializable {
             while (close){
                     Value value = (Value) in.readObject();
                     System.out.println("bus: "+ value.getBus()+" Lon: "+value.getLongtitude()+ " lan: "+value.getLatidude());
+                    Log.e("position","bus: "+ value.getBus()+" Lon: "+value.getLongtitude()+ " lan: "+value.getLatidude());
                     valueArrayList.add(value);
             }
             out.close();
