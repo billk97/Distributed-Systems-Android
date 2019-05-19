@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.aueb.opabus.CodeFolder.DataTypes.Topic;
 import com.aueb.opabus.CodeFolder.Subscriber;
@@ -32,6 +33,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
         mapFragment.getMapAsync( this);
         BusForSearch=getIntent().getStringExtra("BusForSearch");
+        Toast.makeText(getApplicationContext(),BusForSearch,Toast.LENGTH_SHORT).show();
         Maps_Button_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

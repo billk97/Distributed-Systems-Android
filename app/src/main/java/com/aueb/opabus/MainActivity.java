@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private String BusLineCode=null;
     public static android.widget.ListView Main_ListView_SelectRoute;
     private   ArrayList<String> BusDescriptionBackwards=null;
+    private Boolean SearchPreased =false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +41,21 @@ public class MainActivity extends AppCompatActivity {
         Main_button_Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent goToMaps =new Intent(getApplicationContext(),Maps.class);
-                goToMaps.putExtra("BusForSearch",BusForSearch);
-                startActivityForResult(goToMaps,0);
+                if(SearchPreased==true&&!BusForSearch.equals("")){
+                    Intent goToMaps =new Intent(getApplicationContext(),Maps.class);
+                    goToMaps.putExtra("BusForSearch",BusForSearch);
+                    startActivityForResult(goToMaps,0);
+                }else {
+                    Toast.makeText(getApplicationContext(),"Please select a bus and press Search",Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
         Main_imageButton_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SearchPreased=true;
                 BusForSearch = Main_editText_Search.getText().toString();
                 Log.e("BusForSearch ",BusForSearch);
                 BusLineCode=su.BusLineIdToLineCode(BusForSearch);
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void Initializer(){
         Main_ListView_SelectRoute=(android.widget.ListView)findViewById(R.id.Main_ListVIew_SelectRoute);
+        Main_ListView_SelectRoute.setVerticalScrollBarEnabled(true);
         Main_ImageView_Bus=(ImageView) findViewById(R.id.Main_ImageView_Bus);
         Main_editText_Search=(EditText) findViewById(R.id.Main_editText_Search);
         Main_button_Next=(Button) findViewById(R.id.Main_button_Next);

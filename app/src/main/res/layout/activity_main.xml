@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/Main_ImageView_Bus"
-        android:layout_width="277dp"
-        android:layout_height="252dp"
+        android:layout_width="264dp"
+        android:layout_height="234dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/Main_editText_Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,11 +23,11 @@
         android:layout_width="293dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Please enter Bus line"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/Main_ListVIew_SelectRoute"
         app:layout_constraintEnd_toStartOf="@+id/Main_imageButton_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Main_ImageView_Bus" />
@@ -43,15 +43,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.969"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Main_ListVIew_SelectRoute" />
 
     <ImageButton
         android:id="@+id/Main_imageButton_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/Main_ListVIew_SelectRoute"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Main_editText_Search"
         app:layout_constraintTop_toBottomOf="@+id/Main_ImageView_Bus"
@@ -59,12 +60,11 @@
 
     <ListView
         android:id="@+id/Main_ListVIew_SelectRoute"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="331dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/Main_button_Next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
