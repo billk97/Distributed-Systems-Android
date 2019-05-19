@@ -49,14 +49,14 @@ public class MainActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
 
         protected void onPostExecute(Subscriber sub){
-            //Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
+            Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
             progressDialog.dismiss();
         }
 
         @Override
         protected Subscriber doInBackground(Subscriber... myObject) {
             Log.e("tag","bill");
-            su.setBrokerIp("192.168.1.72");
+            su.setBrokerIp("192.168.1.66");
             su.setBrokerport(4202);
             su.EstablishConnection();
             su.disconnect();

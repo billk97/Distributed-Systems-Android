@@ -1,5 +1,7 @@
 package com.aueb.opabus.CodeFolder;
 
+import android.util.Log;
+
 import com.aueb.opabus.CodeFolder.DataTypes.Topic;
 import com.aueb.opabus.CodeFolder.DataTypes.Value;
 
@@ -11,9 +13,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static android.util.Log.e;
+
 public class Subscriber extends Node implements Serializable {
     private static final long serialVersionUID = -2122691439868668146L;
-    private String brokerIp = "192.168.1.72";
+    private String brokerIp = "192.168.1.66";
     private int brokerport= 4202;
     Socket socket =new Socket();
     private ObjectInputStream in;
@@ -46,6 +50,7 @@ public class Subscriber extends Node implements Serializable {
             System.out.println(in.readUTF());
             out.writeUTF("BrokerList");
             out.flush();
+            Log.e("debug",in.readUTF());
             BrokerList=(ArrayList<Brocker>) in.readObject();
 
             System.out.println("bill");
