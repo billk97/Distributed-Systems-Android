@@ -22,7 +22,8 @@ public class Subscriber extends Node implements Serializable {
     Socket socket =new Socket();
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    ArrayList <Value> valueArrayList = new ArrayList<Value>();
+    public ArrayList <Value> valueArrayList = new ArrayList<Value>();
+    public  Value value =null;
     public Subscriber(){
         super();
     }
@@ -120,7 +121,7 @@ public class Subscriber extends Node implements Serializable {
             out.flush();
             Boolean close=true;
             while (close){
-                    Value value = (Value) in.readObject();
+                    value= (Value) in.readObject();
                     System.out.println("bus: "+ value.getBus()+" Lon: "+value.getLongtitude()+ " lan: "+value.getLatidude());
                     Log.e("position","bus: "+ value.getBus()+" Lon: "+value.getLongtitude()+ " lan: "+value.getLatidude());
                     valueArrayList.add(value);
