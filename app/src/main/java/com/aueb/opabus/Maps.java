@@ -89,27 +89,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    public void drawMarker(GoogleMap googleMap){
-        if(googleMap!=null){
-            //googleMap.clear();
-                while(su.valueArrayList.size()<=0){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                LatLng gps = new LatLng(su.value.getLatidude(),su.value.getLongtitude());
-                googleMap.addMarker(new MarkerOptions().position(gps).title("bill "));
-        }
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap=googleMap;
-        latLngs.add(new LatLng(37.973278,23.71061));
-        latLngs.add(new LatLng(37.973278,23.71062));
-        latLngs.add(new LatLng(39.250488,21.57184));
         final Handler handler = new Handler();
         Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
@@ -143,19 +125,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
             }
         };
         timer.schedule(doAsynchronousTask, 0, 2000); //execute in every 1 second
-        int i=1;
-        for (LatLng point :latLngs){
-            markerOptions.position(point);
-            markerOptions.title("point: "+ i);
-            markerOptions.snippet("perigrafi");
-            markers.add(mMap.addMarker(markerOptions));
-            i++;
-        }
-        i=0;
-        for(Marker m: markers){
-            m.setTag(i);
-            i++;
-        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
