@@ -26,7 +26,7 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Please enter Bus line"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/Main_ListVIew_SelectRoute"
         app:layout_constraintEnd_toStartOf="@+id/Main_imageButton_search"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.969"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Main_ListVIew_SelectRoute" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/Main_imageButton_search"

@@ -50,13 +50,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         Initialize();
         Maps.AsyncTaskRunner runner = new Maps.AsyncTaskRunner();
         runner.execute();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if(initialized) drawMarker(mMap);
-            }
-        },0, 1000);
         SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
         mapFragment.getMapAsync( this);
         BusForSearch=getIntent().getStringExtra("BusForSearch");
@@ -74,16 +67,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         ProgressDialog progressDialog;
         protected void onPostExecute(Subscriber subscriber){
             progressDialog.dismiss();
-            /*final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                drawMarker(mMap);
-                System.out.println("runs");
-            }, 1000);*/
         }
         @Override
         protected Subscriber doInBackground(Subscriber... subscribers) {
-            su.setBrokerIp("172.20.1.71");
+            su.setBrokerIp("192.168.1.72");
             su.setBrokerport(4202);
             su.EstablishConnection();
             Thread t = new Thread(()->{
@@ -114,16 +101,48 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                 }
                 LatLng gps = new LatLng(su.value.getLatidude(),su.value.getLongtitude());
                 googleMap.addMarker(new MarkerOptions().position(gps).title("bill "));
-
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        mMap=googleMap;
         latLngs.add(new LatLng(37.973278,23.71061));
         latLngs.add(new LatLng(37.973278,23.71062));
         latLngs.add(new LatLng(39.250488,21.57184));
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            System.out.println("Clicked");
+                            //googleMap.clear();
+                            //mMap.clear();
+                            int i=1;
+                            for(Value v1 : su.valueArrayList){
+                                LatLng LAT = new LatLng(v1.getLatidude(),v1.getLongtitude());
+                                markerOptions.position(LAT);
+                                markerOptions.title("point: "+ i);
+                                markerOptions.snippet("perigrafi");
+                                markers.add(mMap.addMarker(markerOptions));
+                                latLngs.add(LAT);
+                                i++;
+                            }
+                            for(Marker m: markers){
+                                m.setTag(i);
+                                i++;
+                            }
+                            su.valueArrayList.clear();
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 2000); //execute in every 1 second
         int i=1;
         for (LatLng point :latLngs){
             markerOptions.position(point);
@@ -141,6 +160,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
             return;
         }
         mMap.setMyLocationEnabled(true);
+
     }
 
 
