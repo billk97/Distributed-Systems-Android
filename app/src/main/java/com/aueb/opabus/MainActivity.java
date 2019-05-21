@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Initializer();
-        AsyncTaskRunner runner = new AsyncTaskRunner();
+        MainAsyncTaskRunner runner = new MainAsyncTaskRunner();
         runner.execute();
         Main_button_Next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Main_button_Next=(Button) findViewById(R.id.Main_button_Next);
         Main_imageButton_search= (ImageButton) findViewById(R.id.Main_imageButton_search);
     }
-    private class AsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber>{
+    private class MainAsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber>{
         ProgressDialog progressDialog;
 
         protected void onPostExecute(Subscriber sub){

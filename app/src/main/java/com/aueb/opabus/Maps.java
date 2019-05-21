@@ -2,12 +2,16 @@ package com.aueb.opabus;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -24,6 +28,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap mMap;
@@ -33,6 +42,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private MarkerOptions markerOptions = new MarkerOptions();
     private ArrayList<LatLng> latLngs = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
+    private boolean initialized = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +50,13 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         Initialize();
         Maps.AsyncTaskRunner runner = new Maps.AsyncTaskRunner();
         runner.execute();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(initialized) drawMarker(mMap);
+            }
+        },0, 1000);
         SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
         mapFragment.getMapAsync( this);
         BusForSearch=getIntent().getStringExtra("BusForSearch");
@@ -53,15 +70,20 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         });
     }
 
-
     private class AsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber>{
         ProgressDialog progressDialog;
         protected void onPostExecute(Subscriber subscriber){
             progressDialog.dismiss();
+            /*final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                drawMarker(mMap);
+                System.out.println("runs");
+            }, 1000);*/
         }
         @Override
         protected Subscriber doInBackground(Subscriber... subscribers) {
-            su.setBrokerIp("192.168.1.72");
+            su.setBrokerIp("172.20.1.71");
             su.setBrokerport(4202);
             su.EstablishConnection();
             Thread t = new Thread(()->{
@@ -69,6 +91,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                 su.register(new Topic(BusForSearch));
             });
             t.start();
+            initialized = true;
             return null;
         }
         protected void onPreExecute(){
@@ -81,31 +104,26 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
 
     public void drawMarker(GoogleMap googleMap){
         if(googleMap!=null){
-            googleMap.clear();
-            LatLng gps = new LatLng(su.valueArrayList.get(0).getLatidude(),su.valueArrayList.get(0).getLatidude());
-            googleMap.addMarker(new MarkerOptions().position(gps).title("bill"));
+            //googleMap.clear();
+                while(su.valueArrayList.size()<=0){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LatLng gps = new LatLng(su.value.getLatidude(),su.value.getLongtitude());
+                googleMap.addMarker(new MarkerOptions().position(gps).title("bill "));
+
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        Thread t = new Thread(()->{
-            while (su.value.getLatidude()!=0.0){
-            LatLng temp =new LatLng(su.value.getLatidude(),su.value.getLongtitude());
-            mMap.addMarker(new MarkerOptions().position(temp).title("myBus"));
-        }
-//        });
-//        t.start();
-
         latLngs.add(new LatLng(37.973278,23.71061));
         latLngs.add(new LatLng(37.973278,23.71062));
-        latLngs.add(new LatLng(39.250488,21.571842));
+        latLngs.add(new LatLng(39.250488,21.57184));
         int i=1;
         for (LatLng point :latLngs){
             markerOptions.position(point);
@@ -119,23 +137,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
             m.setTag(i);
             i++;
         }
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);
-//            mMap.addMarker(new MarkerOptions().position(Xvrio).title("Vacetion"));
-//            Marker m = mMap.addMarker(new MarkerOptions().position(spiti).title("Marker in My home"));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(spiti));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(spiti,12.0f));
-//            mMap.addPolyline(new PolylineOptions().add(spiti,Xvrio).width(5).color(Color.RED));
     }
 
 
