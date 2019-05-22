@@ -6,6 +6,7 @@ import android.app.job.JobInfo;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -23,11 +24,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -103,16 +108,23 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                             System.out.println("Clicked");
                             //googleMap.clear();
                             //mMap.clear();
-                            int i=1;
                             for(Value v1 : su.valueArrayList){
-                                LatLng LAT = new LatLng(v1.getLatidude(),v1.getLongtitude());
-                                markerOptions.position(LAT);
-                                markerOptions.title("point: "+ i);
-                                markerOptions.snippet("perigrafi");
-                                markers.add(mMap.addMarker(markerOptions));
-                                latLngs.add(LAT);
-                                i++;
+                                    LatLng LAT = new LatLng(v1.getLatidude(),v1.getLongtitude());
+                                    markerOptions.position(LAT);
+                                    markerOptions.title(v1.getBus().getLineName());
+                                    markerOptions.snippet("Vehicle Id: "+v1.getBus().getVehicleId());
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                    markers.add(mMap.addMarker(markerOptions));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LAT,14.2f));
+                                    Polyline line = mMap.addPolyline(new PolylineOptions()
+                                        .add()
+                                        .width(5)
+                                        .color(Color.CYAN));
+                                    latLngs.add(LAT);
+
                             }
+                            Log.e("valueArrayList:", Integer.toString(su.valueArrayList.size()));
+                            int i=0;
                             for(Marker m: markers){
                                 m.setTag(i);
                                 i++;

@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("Set Brokers Ip");
                 final EditText input = new EditText(this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                input.setText("192.168.1.72");
                 builder.setView(input);
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         BrokerIp = input.getText().toString();
                         Toast.makeText(getApplicationContext(),BrokerIp,Toast.LENGTH_SHORT).show();
+                        MainAsyncTaskRunner runner = new MainAsyncTaskRunner();
+                        runner.execute();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -85,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Initializer();
-        MainAsyncTaskRunner runner = new MainAsyncTaskRunner();
-        runner.execute();
+
         Main_button_Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,14 +122,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String selectedBusLine =(String) (Main_ListView_SelectRoute.getItemAtPosition(position));
-                Toast.makeText(getApplicationContext(),"Selected: "+BusForSearch,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Selected: "+selectedBusLine,Toast.LENGTH_SHORT).show();
                 BusForSearch=LinetoId(selectedBusLine);
                 Log.e("selectedLineCode: ",BusForSearch);
                 BusLineCode=su.BusLineIdToLineCode(BusForSearch);
                 Log.e("BusId",BusLineCode);
                 BusDescriptionBackwards= su.LineCodeToRouteCodeDesrcription(BusLineCode);
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,BusDescriptionBackwards);
-                Main_ListView_SelectRoute.setAdapter(arrayAdapter);
 
             }
         });
