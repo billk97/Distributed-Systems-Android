@@ -2,8 +2,6 @@ package com.aueb.opabus;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.app.job.JobInfo;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -35,9 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap mMap;
@@ -50,6 +45,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private boolean initialized = false;
     public String MapsBrokerIp ="192.168.1.80";
     public int MapsBrokerPort=4202;
+    public float [] color = new float[6];
+    public int counter =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +96,15 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         mMap=googleMap;
         final Handler handler = new Handler();
+        color[0]=BitmapDescriptorFactory.HUE_CYAN;
+        color[1]=BitmapDescriptorFactory.HUE_GREEN;
+        color[2]=BitmapDescriptorFactory.HUE_ORANGE;
+        color[3]=BitmapDescriptorFactory.HUE_RED;
+        color[4]=BitmapDescriptorFactory.HUE_YELLOW;
+        color[5]=BitmapDescriptorFactory.HUE_BLUE;
+        HashMap <String, Float> hashMap = new HashMap<String, Float>();
         Timer timer = new Timer();
+
         TimerTask doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {
@@ -114,8 +119,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                                     markerOptions.position(LAT);
                                     markerOptions.title(v1.getBus().getLineName());
                                     markerOptions.snippet("Vehicle Id: "+v1.getBus().getVehicleId());
-
-                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                    Log.e("Bus","Bus: "+ v1.getBus().getLineName() + " Vehicle Id: "+v1.getBus().getVehicleId() +" BusRouteCode "+ v1.getBus().getRouteCode());
+                                    if(!hashMap.containsKey(v1.getBus().getVehicleId())){
+                                        hashMap.put(v1.getBus().getVehicleId(),color[counter]);
+                                        counter ++;
+                                    }
+                                    Log.e("counter: ",""+ counter);
+                                    Log.e("hashMap",Float.toString(hashMap.get(v1.getBus().getVehicleId())));
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(hashMap.get(v1.getBus().getVehicleId())));
                                     markers.add(mMap.addMarker(markerOptions));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LAT,14.2f));
                                     Polyline line = mMap.addPolyline(new PolylineOptions()
@@ -132,13 +143,16 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                                 i++;
                             }
                             su.valueArrayList.clear();
+
                         } catch (Exception e) {
                         }
                     }
                 });
+
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 2000); //execute in every 1 second
+        counter=0;
+        timer.schedule(doAsynchronousTask, 0, 2500); //execute in every 1 second
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
