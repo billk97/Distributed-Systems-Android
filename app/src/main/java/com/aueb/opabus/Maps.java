@@ -114,6 +114,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
                                     markerOptions.position(LAT);
                                     markerOptions.title(v1.getBus().getLineName());
                                     markerOptions.snippet("Vehicle Id: "+v1.getBus().getVehicleId());
+
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                                     markers.add(mMap.addMarker(markerOptions));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LAT,14.2f));

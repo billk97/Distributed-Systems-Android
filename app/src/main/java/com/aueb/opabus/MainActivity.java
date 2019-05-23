@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static android.widget.ListView Main_ListView_SelectRoute;
     private   ArrayList<String> BusDescriptionBackwards=null;
     private Boolean SearchPreased =false;
-    private String BrokerIp="192.168.1.72";
+    private String BrokerIp="172.16.2.33";
     private int BrokerPort=4202;
 
     @Override
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 final EditText input = new EditText(this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                input.setText("192.168.1.72");
+                input.setText("172.16.2.33");
                 builder.setView(input);
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

@@ -44,6 +44,7 @@ public class Subscriber extends Node implements Serializable {
     public String getfindBroker(Topic topic){
         for(Brocker b:BrokerList ){
             for(int i=0;i<b.brokerBusList.size();i++) {
+                Log.e("EDO!! ",b.brokerBusList.get(i)[1]);
                 if (topic.getBusLine().equals(b.brokerBusList.get(i)[1])) {
                     brokerIp=b.getIpAddress();
                 }
@@ -52,34 +53,46 @@ public class Subscriber extends Node implements Serializable {
         return brokerIp;
     }//end findBroker
     public String BusLineIdToLineCode(String LineId){
-        for (String[] line: BrokerList.get(0).brokerBusList){
-            if(line[1].equals(LineId)){
-                return line[0];
+        for(Brocker b1 : BrokerList){
+            for (String[] line: b1.brokerBusList){
+                if(line[1].equals(LineId)){
+                    return line[0];
+                }
             }
         }
+
         return "Bus Not found";
     }
     public String BusLineIdToDescriptionEnglish(String LineId){
-        for (String[] line: BrokerList.get(0).brokerBusList){
-            if(line[1].equals(LineId)){
-                return line[2];
+        for(Brocker b1 :BrokerList){
+            for (String[] line: b1.brokerBusList){
+                if(line[1].equals(LineId)){
+                    return line[2];
+                }
             }
         }
+
         return "Bus Not found";
     }
     public ArrayList<String> LineCodeToRouteCodeDesrcription(String LineCode){
         ArrayList<String> DescriptionArray = new ArrayList<>();
-        for (String [] line:BrokerList.get(0).localeRouteCodesList ){
-            if(line[1].equals(LineCode)){
-                DescriptionArray.add(line[3]);
+
+        for (Brocker b1 :BrokerList){
+            for (String [] line:b1.localeRouteCodesList ){
+                if(line[1].equals(LineCode)){
+                    DescriptionArray.add(line[3]);
+                }
             }
         }
+
         return DescriptionArray;
     }
     public ArrayList<String> AvailableBuses(){
         ArrayList<String>AvailableBus = new ArrayList<>();
-        for (String [] line:BrokerList.get(0).brokerBusList){
-            AvailableBus.add(line[1]+" "+line[2]);
+        for (Brocker b1 : BrokerList){
+            for (String [] line:b1.brokerBusList){
+                AvailableBus.add(line[1]+" "+line[2]);
+            }
         }
         return AvailableBus;
     }
