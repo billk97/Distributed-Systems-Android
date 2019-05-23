@@ -52,8 +52,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Initialize();
-        Maps.AsyncTaskRunner runner = new Maps.AsyncTaskRunner();
-        runner.execute();
+        AsyncTaskRunner Mrunner = new AsyncTaskRunner();
+        Mrunner.execute();
         SupportMapFragment mapFragment =(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_map);
         mapFragment.getMapAsync( this);
         BusForSearch=getIntent().getStringExtra("BusForSearch");
@@ -67,8 +67,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         });
     }
 
+
     private class AsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber>{
         ProgressDialog progressDialog;
+        @Override
         protected void onPostExecute(Subscriber subscriber){
             progressDialog.dismiss();
         }
@@ -84,9 +86,11 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
             initialized = true;
             return null;
         }
+        @Override
         protected void onPreExecute(){
             progressDialog = ProgressDialog.show(Maps.this,"Initializing Connection","Connecting... ");
         }
+        @Override
         protected void onProgressUpdate(String... text){
 
         }

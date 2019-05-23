@@ -2,7 +2,6 @@ package com.aueb.opabus;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -149,13 +148,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class MainAsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber> {
-        ProgressDialog progressDialog;
+        ProgressDialog MapsprogressDialog;
 
         protected void onPostExecute(Subscriber sub){
             Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,su.AvailableBuses());
             Main_ListView_SelectRoute.setAdapter(arrayAdapter);
-            progressDialog.dismiss();
+            MapsprogressDialog.dismiss();
         }
 
         @Override
@@ -166,9 +165,13 @@ public class MainActivity extends AppCompatActivity {
             su.disconnect();
             return su;
         }
+        @Override
+        protected void onCancelled(){
+            MapsprogressDialog.dismiss();
+        }
 
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(MainActivity.this,"Initializing Connection","Connecting... ");
+            MapsprogressDialog = ProgressDialog.show(MainActivity.this,"Initializing Connection","Connecting... ");
         }
         protected void onProgressUpdate(String... text){
 
