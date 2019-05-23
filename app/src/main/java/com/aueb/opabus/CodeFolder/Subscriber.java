@@ -41,6 +41,16 @@ public class Subscriber extends Node implements Serializable {
             }
         }
     }//end findBroker
+    public String getfindBroker(Topic topic){
+        for(Brocker b:BrokerList ){
+            for(int i=0;i<b.brokerBusList.size();i++) {
+                if (topic.getBusLine().equals(b.brokerBusList.get(i)[1])) {
+                    brokerIp=b.getIpAddress();
+                }
+            }
+        }
+        return brokerIp;
+    }//end findBroker
     public String BusLineIdToLineCode(String LineId){
         for (String[] line: BrokerList.get(0).brokerBusList){
             if(line[1].equals(LineId)){

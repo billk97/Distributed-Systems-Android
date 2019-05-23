@@ -48,6 +48,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
     private ArrayList<LatLng> latLngs = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
     private boolean initialized = false;
+    public String MapsBrokerIp ="192.168.1.80";
+    public int MapsBrokerPort=4202;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +77,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         }
         @Override
         protected Subscriber doInBackground(Subscriber... subscribers) {
-            su.setBrokerIp("192.168.1.72");
-            su.setBrokerport(4202);
-            su.EstablishConnection();
+            su.setBrokerIp(su.getfindBroker(new Topic(BusForSearch)));
+            su.setBrokerport(MapsBrokerPort);
             Thread t = new Thread(()->{
                 System.out.println("searching for: "+ BusForSearch);
                 su.register(new Topic(BusForSearch));
