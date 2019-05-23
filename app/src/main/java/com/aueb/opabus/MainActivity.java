@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String selectedBusLine =(String) (Main_ListView_SelectRoute.getItemAtPosition(position));
-                Toast.makeText(getApplicationContext(),"Selected: "+selectedBusLine,Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(),"Selected: "+selectedBusLine,Toast.LENGTH_SHORT).show();
                 BusForSearch=LinetoId(selectedBusLine);
                 Log.e("selectedLineCode: ",BusForSearch);
                 BusLineCode=su.BusLineIdToLineCode(BusForSearch);
@@ -148,13 +148,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class MainAsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber> {
-        ProgressDialog MapsprogressDialog;
+        ProgressDialog progressDialog;
 
         protected void onPostExecute(Subscriber sub){
             Log.e("tag",sub.BrokerList.get(0).brokerBusList.get(0)[0]);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), simple_expandable_list_item_1,su.AvailableBuses());
             Main_ListView_SelectRoute.setAdapter(arrayAdapter);
-            MapsprogressDialog.dismiss();
+            progressDialog.dismiss();
+            progressDialog=null;
+
         }
 
         @Override
@@ -167,11 +169,11 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onCancelled(){
-            MapsprogressDialog.dismiss();
+            progressDialog.dismiss();
         }
 
         protected void onPreExecute(){
-            MapsprogressDialog = ProgressDialog.show(MainActivity.this,"Initializing Connection","Connecting... ");
+            progressDialog = ProgressDialog.show(MainActivity.this,"Initializing Connection","Connecting... ");
         }
         protected void onProgressUpdate(String... text){
 

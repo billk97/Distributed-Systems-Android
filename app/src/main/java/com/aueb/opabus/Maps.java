@@ -69,10 +69,15 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
 
 
     private class AsyncTaskRunner extends AsyncTask<Subscriber,String,Subscriber>{
-        ProgressDialog progressDialog;
+        ProgressDialog MapsprogressDialog;
         @Override
         protected void onPostExecute(Subscriber subscriber){
-            progressDialog.dismiss();
+            MapsprogressDialog.dismiss();
+            MapsprogressDialog=null;
+        }
+        @Override
+        protected void onCancelled(){
+            MapsprogressDialog.dismiss();
         }
         @Override
         protected Subscriber doInBackground(Subscriber... subscribers) {
@@ -88,7 +93,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback{
         }
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(Maps.this,"Initializing Connection","Connecting... ");
+            MapsprogressDialog = ProgressDialog.show(Maps.this,"Initializing Connection","Connecting... ");
         }
         @Override
         protected void onProgressUpdate(String... text){
